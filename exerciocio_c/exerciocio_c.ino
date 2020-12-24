@@ -1,20 +1,15 @@
 
 #include <WiFi.h>
 #include <WiFiClient.h>
-
+#include<WiFiAP.h>
+#include <WebServer.h>
+#include <ESPmDNS.h>
 
 const char* ssid = "NET_2G60E226";
 const char* password = "4F60E226";
 
 WiFiServer server(80); //Shield irá receber as requisições das páginas (o padrão WEB é a porta 80)
-WiFiClient  client;
 
-String HTTP_req; 
-String URLValue;
-
-
-String getURLRequest(String *requisicao);
-bool mainPageRequest(String *requisicao);
 
 const int servomotor1 = 5;
 const int servomotor2 = 6;
@@ -24,11 +19,12 @@ bool estadoserv1 = digitalRead(servomotor1);
 bool estadoserv2 = digitalRead(servomotor2);
 bool estadoserv3 = digitalRead(servomotor3);
 
+void setup(){         
+  
+        
+    Serial.begin(115200);
 
-void conexao() {
-
-//Conexão na rede WiFi
-    
+    //Conexão na rede WiFi
     Serial.println();
     Serial.print("Conectando a ");
     Serial.println(ssid);
@@ -48,13 +44,6 @@ void conexao() {
 
     // Mostra o endereco IP
     Serial.println(WiFi.localIP());
-}
-
-void setup(){         
-    
-    Serial.begin(115200);
-    
-    conexao();
   
     //Configura o modo dos pinos
     pinMode(servomotor1, OUTPUT);
